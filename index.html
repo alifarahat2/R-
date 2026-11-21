@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Ali & Romaysaa ❤️</title>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Arial, sans-serif;
+    background: linear-gradient(135deg, #fff0f3 0%, #ffe3e8 100%);
+    color: #4a2531;
+    height: 100dvh;
+    width: 100vw;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* قلوب عائمة في الخلفية */
+  .hearts-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+  .floating-heart {
+    position: absolute;
+    bottom: -30px;
+    color: rgba(214, 51, 108, 0.25);
+    animation: floatUp linear infinite;
+    user-select: none;
+  }
+  @keyframes floatUp {
+    0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+    20% { opacity: 0.65; }
+    80% { opacity: 0.4; }
+    100% { transform: translateY(-110vh) scale(1.2) rotate(25deg); opacity: 0; }
+  }
+
+  /* نظام الصفحات المنفصلة (كل حاجة لوحدها) */
+  .screen {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 20px 85px;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(18px) scale(0.98);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    text-align: center;
+  }
+
+  .screen.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0) scale(1);
+  }
+
+  /* الشارة العلوية */
+  .badge {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #ffccd5;
+    color: #d6336c;
+    padding: 6px 18px;
+    border-radius: 50px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    margin-bottom: 14px;
+    box-shadow: 0 4px 12px rgba(214, 51, 108, 0.08);
+  }
+
+  /* الصفحة 1: البداية والأسماء */
+  .names-title {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 2.7rem;
+    font-weight: bold;
+    color: #d6336c;
+    margin-bottom: 12px;
+    direction: ltr;
+    text-shadow: 0 4px 18px rgba(214, 51, 108, 0.18);
+  }
+
+  .subtitle-en {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #4a2531;
+    font-size: 1.05rem;
+    margin-bottom: 24px;
+    direction: ltr;
+    opacity: 0.85;
+  }
+
+  .heart-pulse {
+    font-size: 3.4rem;
+    margin: 8px 0 26px;
+    animation: pulse 1.6s infinite;
+    filter: drop-shadow(0 6px 14px rgba(214, 51, 108, 0.3));
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.18); }
+  }
+
+  .btn-next {
+    background-color: #d6336c;
+    color: #ffffff;
+    border: none;
+    padding: 13px 32px;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(214, 51, 108, 0.25);
+    transition: background-color 0.25s ease, transform 0.2s ease;
+  }
+  .btn-next:hover {
+    background-color: #a61e4d;
+  }
+  .btn-next:active {
+    transform: scale(0.96);
+  }
+
+  /* الصفحة 2: العداد */
+  .section-heading {
+    font-size: 1.45rem;
+    color: #d6336c;
+    font-weight: bold;
+    margin-bottom: 6px;
+  }
+  .date-tag {
+    color: #4a2531;
+    font-size: 0.98rem;
+    font-weight: bold;
+    margin-bottom: 22px;
+    opacity: 0.85;
+  }
+  .counter-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 340px;
+    margin-bottom: 28px;
+  }
+  .time-box {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid #ffccd5;
+    border-radius: 18px;
+    padding: 18px 10px;
+    box-shadow: 0 8px 20px rgba(214, 51, 108, 0.1);
+  }
+  .time-num {
+    display: block;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #d6336c;
+    font-variant-numeric: tabular-nums;
+  }
+  .time-label {
+    font-size: 0.9rem;
+    color: #4a2531;
+    margin-top: 4px;
+    display: block;
+    font-weight: 600;
+  }
+
+  /* الصفحة 3: الأظرف الأربعة */
+  .envelopes-hint {
+    font-size: 0.92rem;
+    color: #4a2531;
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+  .envelopes-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 350px;
+    margin-bottom: 24px;
+  }
+  .envelope-card {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1.5px solid #ffccd5;
+    border-radius: 18px;
+    padding: 22px 12px;
+    min-height: 105px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.35s ease;
+    box-shadow: 0 8px 20px rgba(214, 51, 108, 0.1);
+  }
+  .envelope-card:hover {
+    transform: translateY(-2px);
+    border-color: #d6336c;
+  }
+  .envelope-closed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    color: #4a2531;
+  }
+  .envelope-closed .env-icon {
+    font-size: 1.6rem;
+  }
+  .envelope-open-msg {
+    display: none;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #ffffff;
+    animation: fadeInScale 0.4s ease;
+  }
+  .envelope-card.opened {
+    background: #d6336c;
+    border-color: #a61e4d;
+    box-shadow: 0 8px 22px rgba(214, 51, 108, 0.3);
+  }
+  .envelope-card.opened .envelope-closed {
+    display: none;
+  }
+  .envelope-card.opened .envelope-open-msg {
+    display: block;
+  }
+  @keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.85); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* الصفحة 4: الرسالة الكبيرة */
+  .big-letter-card {
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px dashed #d6336c;
+    border-radius: 20px;
+    padding: 24px 20px;
+    max-width: 390px;
+    width: 100%;
+    max-height: 62dvh;
+    overflow-y: auto;
+    text-align: right;
+    line-height: 1.85;
+    font-size: 1rem;
+    color: #4a2531;
+    box-shadow: 0 10px 25px rgba(214, 51, 108, 0.12);
+    margin-bottom: 20px;
+  }
+  .big-letter-card h3 {
+    color: #d6336c;
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    text-align: center;
+  }
+  .big-letter-card p {
+    margin-bottom: 12px;
+  }
+  .letter-sign {
+    text-align: left;
+    color: #d6336c;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  /* شريط التنقل السفلي بين الصفحات */
+  .nav-dots {
+    position: fixed;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+    display: flex;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid #ffccd5;
+    padding: 8px 14px;
+    border-radius: 50px;
+    box-shadow: 0 8px 22px rgba(214, 51, 108, 0.14);
+  }
+  .nav-btn {
+    background: transparent;
+    border: none;
+    color: #4a2531;
+    font-size: 0.84rem;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .nav-btn.active {
+    background: #d6336c;
+    color: #ffffff;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+  <!-- قلوب عائمة -->
+  <div class="hearts-bg" id="heartsBg"></div>
+
+  <!-- مشغل الموسيقى الهادئة المباشر بدون أي زر أو خانة ظاهرة -->
+  <audio id="calmSong" loop preload="auto" playsinline>
+    <source src="https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3" type="audio/mpeg">
+    <source src="https://cdn.pixabay.com/download/audio/2022/02/07/audio_6590293572.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- الصفحة 1: البداية والأسماء -->
+  <section class="screen active" id="screen-0">
+    <div class="badge">✨ حكايتنا سوا ✨</div>
+    <div class="heart-pulse">❤️</div>
+    <h1 class="names-title">Ali &amp; Romaysaa</h1>
+    <p class="subtitle-en">Every moment with you is my favorite memory</p>
+    <button class="btn-next" onclick="goToScreen(1)">ابدئي رحلتنا 💌</button>
+  </section>
+
+  <!-- الصفحة 2: العداد لوحده -->
+  <section class="screen" id="screen-1">
+    <div class="badge">⏳ عداد حبنا</div>
+    <h2 class="section-heading">مع بعض من يوم</h2>
+    <div class="date-tag">10 / 4 / 2026</div>
+    <div class="counter-grid">
+      <div class="time-box">
+        <span class="time-num" id="days">0</span>
+        <span class="time-label">يوم</span>
+      </div>
+      <div class="time-box">
+        <span class="time-num" id="hours">0</span>
+        <span class="time-label">ساعة</span>
+      </div>
+      <div class="time-box">
+        <span class="time-num" id="minutes">0</span>
+        <span class="time-label">دقيقة</span>
+      </div>
+      <div class="time-box">
+        <span class="time-num" id="seconds">0</span>
+        <span class="time-label">ثانية</span>
+      </div>
+    </div>
+    <button class="btn-next" onclick="goToScreen(2)">افتحي الأظرف ✉️</button>
+  </section>
+
+  <!-- الصفحة 3: الأظرف الأربعة -->
+  <section class="screen" id="screen-2">
+    <div class="badge">💌 4 رسائل لقلبك</div>
+    <h2 class="section-heading">افتحي الأظرف بالترتيب</h2>
+    <p class="envelopes-hint">اضغطي على كل ظرف عشان تشوفي الكلمة اللي جواه</p>
+    <div class="envelopes-grid">
+      <div class="envelope-card" onclick="toggleEnvelope(this)">
+        <div class="envelope-closed">
+          <span class="env-icon">✉️</span>
+          <span>الظرف الأول</span>
+        </div>
+        <div class="envelope-open-msg">بحبك</div>
+      </div>
+      <div class="envelope-card" onclick="toggleEnvelope(this)">
+        <div class="envelope-closed">
+          <span class="env-icon">✉️</span>
+          <span>الظرف الثاني</span>
+        </div>
+        <div class="envelope-open-msg">ي</div>
+      </div>
+      <div class="envelope-card" onclick="toggleEnvelope(this)">
+        <div class="envelope-closed">
+          <span class="env-icon">✉️</span>
+          <span>الظرف الثالث</span>
+        </div>
+        <div class="envelope-open-msg">نور</div>
+      </div>
+      <div class="envelope-card" onclick="toggleEnvelope(this)">
+        <div class="envelope-closed">
+          <span class="env-icon">✉️</span>
+          <span>الظرف الرابع</span>
+        </div>
+        <div class="envelope-open-msg">عيني</div>
+      </div>
+    </div>
+    <button class="btn-next" onclick="goToScreen(3)">اقرئي رسالتي الكبيرة 📜</button>
+  </section>
+
+  <!-- الصفحة 4: الرسالة الكبيرة لوحدها -->
+  <section class="screen" id="screen-3">
+    <div class="badge">💖 من علي إلى روميساء</div>
+    <div class="big-letter-card">
+      <h3>إلى أغلى إنسانة في حياتي.. روميساء</h3>
+      <p>
+        من يوم 10/4/2026 وحياتي كلها اتغيرت للأجمل بوجودك فيها. بقيتي إنتي الفرحة اللي بستناها كل يوم، والراحة اللي بهرب ليها من أي تعب.
+      </p>
+      <p>
+        مكنتش أتخيل إن في حد يقدر يملى قلبي بالشكل ده، كل ضحكة منك بالدنيا وما فيها، وكل لحظة بقضيها معاكي بتثبتلي إني اخترت صح.
+      </p>
+      <p>
+        ربنا يديمك نعمة في حياتي، ويفضل حبنا يكبر يوم ورا يوم، وتفضلي دايماً نور عيني وحبيبتي وكل دنيتي.
+      </p>
+      <div class="letter-sign">حبيبك.. علي ❤️</div>
+    </div>
+    <button class="btn-next" onclick="goToScreen(0)">العودة للبداية ↻</button>
+  </section>
+
+  <!-- شريط التنقل السفلي -->
+  <nav class="nav-dots">
+    <button class="nav-btn active" onclick="goToScreen(0)">البداية</button>
+    <button class="nav-btn" onclick="goToScreen(1)">العداد</button>
+    <button class="nav-btn" onclick="goToScreen(2)">الأظرف</button>
+    <button class="nav-btn" onclick="goToScreen(3)">الرسالة</button>
+  </nav>
+
+  <script>
+    const screens = document.querySelectorAll('.screen');
+    const navBtns = document.querySelectorAll('.nav-btn');
+    const song = document.getElementById('calmSong');
+    song.volume = 0.45;
+
+    function ensureMusicPlaying() {
+      if (song && song.paused) {
+        song.play().catch(() => {});
+      }
+    }
+
+    function goToScreen(index) {
+      screens.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+      navBtns.forEach((b, i) => {
+        b.classList.toggle('active', i === index);
+      });
+      ensureMusicPlaying();
+    }
+
+    function toggleEnvelope(el) {
+      el.classList.toggle('opened');
+      ensureMusicPlaying();
+    }
+
+    window.addEventListener('load', ensureMusicPlaying);
+    ['click', 'touchstart', 'pointerdown', 'keydown'].forEach(evt => {
+      document.addEventListener(evt, ensureMusicPlaying, { passive: true });
+    });
+
+    const startDate = new Date(2026, 3, 10, 0, 0, 0);
+    function updateCounter() {
+      const now = new Date();
+      let diff = Math.abs(now - startDate);
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      diff -= days * (1000 * 60 * 60 * 24);
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      diff -= hours * (1000 * 60 * 60);
+      const minutes = Math.floor(diff / (1000 * 60));
+      diff -= minutes * (1000 * 60);
+      const seconds = Math.floor(diff / 1000);
+
+      document.getElementById('days').textContent = days;
+      document.getElementById('hours').textContent = hours;
+      document.getElementById('minutes').textContent = minutes;
+      document.getElementById('seconds').textContent = seconds;
+    }
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    const heartsBg = document.getElementById('heartsBg');
+    const symbols = ['❤️', '💖', '💕', '✨'];
+    for (let i = 0; i < 18; i++) {
+      const span = document.createElement('span');
+      span.className = 'floating-heart';
+      span.textContent = symbols[i % symbols.length];
+      span.style.left = Math.random() * 100 + '%';
+      span.style.fontSize = (14 + Math.random() * 16) + 'px';
+      span.style.animationDuration = (7 + Math.random() * 8) + 's';
+      span.style.animationDelay = (Math.random() * 6) + 's';
+      heartsBg.appendChild(span);
+    }
+  </script>
+</body>
+</html>
